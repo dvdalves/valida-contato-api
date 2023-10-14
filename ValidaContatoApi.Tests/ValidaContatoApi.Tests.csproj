@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ValidaContatoApi.Business\ValidaContatoApi.Business.csproj" />
+    <ProjectReference Include="..\ValidaContatoApi.Data\ValidaContatoApi.Data.csproj" />
+    <ProjectReference Include="..\ValidaContatoApi.Domain\ValidaContatoApi.Domain.csproj" />
+    <ProjectReference Include="..\ValidaContatoApi\ValidaContatoApi.csproj" />
+  </ItemGroup>
+
+</Project>
