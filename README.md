@@ -5,6 +5,7 @@ ValidaContatoApi é uma solução desenvolvida em .NET Core, projetada para prop
 Criação e Validação de Contatos: Adicione contatos verificando critérios específicos.
 Gestão Intuitiva de Contatos: Visualize, desative ou remova contatos com facilidade e segurança.
 Validação Automática de Idade: Processe e valide idades em tempo real, garantindo a maioridade dos contatos.
+
 💡 Destaques da ValidaContatoApi 💡
 Dados Confiáveis: Implementação de validações rigorosas para garantir a integridade dos dados.
 Resiliência: Ampla cobertura de testes unitários para um app mais confiável e a prova de falhas.
