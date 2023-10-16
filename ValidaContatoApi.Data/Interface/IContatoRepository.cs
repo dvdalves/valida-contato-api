@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Data.Interface
 {
-    public interface IContatoRepository : IRepository
+    public interface IContatoRepository : IRepository<Contato>
     {
+
     }
 }
