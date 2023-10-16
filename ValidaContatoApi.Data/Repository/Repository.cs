@@ -28,14 +28,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     public async Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.Where(predicate).ToListAsync();
-    }
+    }    
 
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
-
-    public async Task<TEntity> ObterPorId(int id)
+    public async Task<TEntity> ObterPorId(Guid id)
     {
         return await _dbSet.FindAsync(id);
     }
@@ -45,17 +40,17 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         return await _dbSet.ToListAsync();
     }
 
-    public async Task Remover(int id)
+    public Task Remover(Guid id)
     {
-        var entity = await _dbSet.FindAsync(id);
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-        }
+        throw new NotImplementedException();
     }
 
     public async Task<int> SaveChanges()
     {
         return await _context.SaveChangesAsync();
+    }
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }

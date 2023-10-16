@@ -1,38 +1,45 @@
 ﻿using ValidaContatoApi.Business.Interface;
+using ValidaContatoApi.Data.Interface;
 using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Business.Services
 {
     public class ContatoService : IContatoService
     {
-        public Task Adicionar(Contato contato)
+        private readonly IContatoRepository _contatoRepository;
+
+        public ContatoService(IContatoRepository contatoRepository)
         {
-            throw new NotImplementedException();
+            _contatoRepository = contatoRepository;
         }
 
-        public Task Atualizar(Contato contato)
+        public async Task Adicionar(Contato contato)
         {
-            throw new NotImplementedException();
+            await _contatoRepository.Adicionar(contato);
         }
 
+        public async Task Atualizar(Contato contato)
+        {
+            await _contatoRepository.Atualizar(contato);
+        }       
+
+        public async Task ObterPorId(Guid id)
+        {
+            await _contatoRepository.ObterPorId(id);
+        }
+
+        public async Task<IEnumerable<Contato>> ObterTodos()
+        {
+            return await _contatoRepository.ObterTodos();
+        }
+
+        public async Task Remover(Guid id)
+        {
+            await _contatoRepository.Remover(id);
+        }
         public void Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task ObterPorId(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Contato>> ObterTodos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Remover(Guid id)
-        {
-            throw new NotImplementedException();
+            _contatoRepository?.Dispose();
         }
     }
 }
