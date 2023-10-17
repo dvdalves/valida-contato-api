@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ValidaContatoApi.Domain.Enum
 {
-    internal class SexoEnum
+    public enum SexoEnum
     {
+        Masculino = 0,
+        Feminino = 1
     }
 }

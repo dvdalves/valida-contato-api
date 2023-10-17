@@ -1,9 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ValidaContatoApi.Business.Resultados;
 
 namespace ValidaContatoApi.Controllers
 {
-    public abstract class BaseController : Controller
+    [ApiController()]
+    [Route("Controller/Api/")]
+    public abstract class BaseController : ControllerBase
     {
+        protected IActionResult ObterIActionResult<T>(Resultado<T> resultado)
+        {
+            if (resultado == null)
+                return StatusCode(500, null);
 
+            return StatusCode(resultado.StatusCode, resultado);
+        }
     }
 }
