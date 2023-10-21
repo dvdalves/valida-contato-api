@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ValidaContatoApi.Domain.Enum;
+﻿using ValidaContatoApi.Domain.Enum;
 
 namespace ValidaContatoApi.Business.ViewModels
 {

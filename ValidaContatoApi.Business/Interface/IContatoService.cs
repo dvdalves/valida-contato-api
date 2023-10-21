@@ -1,7 +1,6 @@
 ﻿using ValidaContatoApi.Business.DTO;
 using ValidaContatoApi.Business.Resultados;
 using ValidaContatoApi.Business.ViewModels;
-using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Business.Interface
 {

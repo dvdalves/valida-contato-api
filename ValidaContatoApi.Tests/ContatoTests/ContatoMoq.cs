@@ -1,7 +1,7 @@
 ﻿using ValidaContatoApi.Domain.Enum;
 using ValidaContatoApi.Domain.Models;
 
-namespace ValidaContatoApi.Tests
+namespace ValidaContatoApi.Tests.ContatoTests
 {
     public static class ContatoMoq
     {

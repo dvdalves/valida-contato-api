@@ -8,7 +8,6 @@ namespace ValidaContatoApi.Data.Repository
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         protected readonly DbContext _context;
-
         public Repository(DbContext context)
         {
             _context = context;

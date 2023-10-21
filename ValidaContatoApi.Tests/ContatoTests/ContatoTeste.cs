@@ -6,7 +6,7 @@ using ValidaContatoApi.Business.ViewModels;
 using ValidaContatoApi.Domain.Enum;
 using ValidaContatoApi.Domain.Models;
 
-namespace ValidaContatoApi.Tests
+namespace ValidaContatoApi.Tests.ContatoTests
 {
     public class ContatoTeste : TesteBase
     {
