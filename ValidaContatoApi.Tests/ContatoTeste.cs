@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
+using ValidaContatoApi.Business.Interface;
+using ValidaContatoApi.Business.ViewModels;
+using ValidaContatoApi.Domain.Enum;
+using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Tests
 {
@@ -26,7 +28,7 @@ namespace ValidaContatoApi.Tests
             PopularBancoDeDados(ContatoMoq.ObterMoq_Para_ObterTodosContatos());
 
             //act
-            var resultAct = await _contatoService.ObterTodosContatos();
+            var resultAct = await _contatoService.ObterTodos();
 
             //assert	
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -47,7 +49,7 @@ namespace ValidaContatoApi.Tests
             await _context.Database.EnsureCreatedAsync();
 
             // act
-            var resultAct = await _contatoService.ObterTodosContatos();
+            var resultAct = await _contatoService.ObterTodos();
 
             // assert    
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -68,7 +70,7 @@ namespace ValidaContatoApi.Tests
             await _context.Database.EnsureCreatedAsync();
 
             //act
-            var resultAct = await _contatoService.ObterContatoPorId(Guid.NewGuid());
+            var resultAct = await _contatoService.ObterPorId(Guid.NewGuid());
 
             //assert
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -89,7 +91,7 @@ namespace ValidaContatoApi.Tests
 
             //act
             var constato = await _context.Contatos.FirstOrDefaultAsync();
-            var resultAct = await _contatoService.ObterContatoPorId(constato.Id);
+            var resultAct = await _contatoService.ObterPorId(constato.Id);
 
             //assert
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -106,7 +108,7 @@ namespace ValidaContatoApi.Tests
             var mensagemEsperada = "Contato adicionado com sucesso!";
 
             //arrange 
-            var createContato = new CreateContatoVM
+            var createContato = new CriarContatoVM
             {
                 DataNascimento = DateTime.Parse("05-10-1995"),
                 Sexo = (int)SexoEnum.Masculino,
@@ -114,7 +116,7 @@ namespace ValidaContatoApi.Tests
             };
 
             //act 
-            var resultadoAcao = await _contatoService.AdicionarContato(createContato);
+            var resultadoAcao = await _contatoService.Adicionar(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Nome == createContato.Nome);
 
             //assert
@@ -134,7 +136,7 @@ namespace ValidaContatoApi.Tests
             var mensagemEsperada = "Contato não pode ser menor de idade!";
 
             //arrange
-            var createContato = new CreateContatoVM
+            var createContato = new CriarContatoVM
             {
                 DataNascimento = DateTime.Now,
                 Sexo = (int)SexoEnum.Masculino,
@@ -142,7 +144,7 @@ namespace ValidaContatoApi.Tests
             };
 
             //act
-            var resultadoAcao = await _contatoService.AdicionarContato(createContato);
+            var resultadoAcao = await _contatoService.Adicionar(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Nome == createContato.Nome);
 
             //assert	
@@ -163,7 +165,7 @@ namespace ValidaContatoApi.Tests
             var mensagemEsperada = "Não pode ser selecionada data maior ou igual a atual!";
 
             //arrange
-            var createContato = new CreateContatoVM
+            var createContato = new CriarContatoVM
             {
                 DataNascimento = DateTime.Now.AddDays(1),
                 Sexo = (int)SexoEnum.Masculino,
@@ -171,7 +173,7 @@ namespace ValidaContatoApi.Tests
             };
 
             //act
-            var resultadoAcao = await _contatoService.AdicionarContato(createContato);
+            var resultadoAcao = await _contatoService.Adicionar(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Nome == createContato.Nome);
 
             //assert	
@@ -196,7 +198,7 @@ namespace ValidaContatoApi.Tests
             PopularBancoDeDados(new List<Contato> { contato });
 
             // act
-            var result = await _contatoService.AtivarContato(contatoId);
+            var result = await _contatoService.Ativar(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -221,7 +223,7 @@ namespace ValidaContatoApi.Tests
             PopularBancoDeDados(new List<Contato> { contato });
 
             // act
-            var result = await _contatoService.AtivarContato(contatoId);
+            var result = await _contatoService.Ativar(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -242,7 +244,7 @@ namespace ValidaContatoApi.Tests
             var contatoId = Guid.NewGuid();
 
             // act
-            var result = await _contatoService.AtivarContato(contatoId);
+            var result = await _contatoService.Ativar(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -261,11 +263,11 @@ namespace ValidaContatoApi.Tests
 
             // Arrange
             var updatedContato = await _context.Contatos.FirstOrDefaultAsync();
-            var contato = _mapper.Map<UpdateContatoVM>(updatedContato);
+            var contato = _mapper.Map<AtualizarContatoVM>(updatedContato);
             contato.Nome = "David 5";
 
             // Act
-            var result = await _contatoService.AtualizarContato(contato);
+            var result = await _contatoService.Atualizar(contato);
             var verificacao = await _context.Contatos.FirstAsync(p => p.Id == contato.Id);
 
             // Assert
@@ -284,7 +286,7 @@ namespace ValidaContatoApi.Tests
             var mensagemEsperada = "Contato não existe!";
 
             //arrange 
-            var updateContato = new UpdateContatoVM
+            var updateContato = new AtualizarContatoVM
             {
                 Id = Guid.NewGuid(),
                 DataNascimento = DateTime.Parse("05-10-1995"),
@@ -293,7 +295,7 @@ namespace ValidaContatoApi.Tests
             };
 
             //act 
-            var resultadoAcao = await _contatoService.AtualizarContato(updateContato);
+            var resultadoAcao = await _contatoService.Atualizar(updateContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Id == updateContato.Id);
 
             //assert
@@ -313,12 +315,12 @@ namespace ValidaContatoApi.Tests
 
             //arrange
             var updatedContato = await _context.Contatos.FirstOrDefaultAsync();
-            var contato = _mapper.Map<UpdateContatoVM>(updatedContato);
+            var contato = _mapper.Map<AtualizarContatoVM>(updatedContato);
             contato.DataNascimento = DateTime.Now; // Definir uma data de nascimento válida
             contato.Nome = "David 5";
 
             //act
-            var resultadoAcao = await _contatoService.AtualizarContato(contato);
+            var resultadoAcao = await _contatoService.Atualizar(contato);
             var contatoAtualizado = await _context.Contatos.FirstOrDefaultAsync(p => p.Id == contato.Id);
 
             //assert	
@@ -339,12 +341,12 @@ namespace ValidaContatoApi.Tests
 
             // Arrange
             var updatedContato = await _context.Contatos.FirstOrDefaultAsync();
-            var contato = _mapper.Map<UpdateContatoVM>(updatedContato);
+            var contato = _mapper.Map<AtualizarContatoVM>(updatedContato);
             contato.DataNascimento = DateTime.Now.AddDays(1); // Definir uma data futura inválida
             contato.Nome = "David 5";
 
             // Act
-            var resultadoAcao = await _contatoService.AtualizarContato(contato);
+            var resultadoAcao = await _contatoService.Atualizar(contato);
             var contatoAtualizado = await _context.Contatos.FirstOrDefaultAsync(p => p.Id == contato.Id);
 
             // Assert
@@ -367,7 +369,7 @@ namespace ValidaContatoApi.Tests
             var contatoId = Guid.NewGuid();
 
             // act
-            var result = await _contatoService.RemoverContato(contatoId);
+            var result = await _contatoService.Remover(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -390,7 +392,7 @@ namespace ValidaContatoApi.Tests
             PopularBancoDeDados(new List<Contato> { contato });
 
             // act
-            var result = await _contatoService.RemoverContato(contatoId);
+            var result = await _contatoService.Remover(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
