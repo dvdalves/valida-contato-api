@@ -1,5 +1,5 @@
-🚀 ValidaContatoApi:
-ValidaContatoApi é uma solução desenvolvida em .NET Core, projetada para proporcionar uma experiência otimizada e segura no gerenciamento e validação de contatos. Essa API não só garante o manejo eficiente dos dados de contatos mas também assegura a integridade e autenticidade das informações através de validações rigorosas.
+ValidaContatoApi é uma solução desenvolvida em .NET Core, projetada para proporcionar uma experiência otimizada e segura no gerenciamento e validação de contatos.
+
 
 🌟 Funcionalidades Principais 🌟
 Criação e Validação de Contatos: Adicione contatos verificando critérios específicos.
