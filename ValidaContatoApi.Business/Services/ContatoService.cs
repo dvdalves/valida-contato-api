@@ -28,22 +28,24 @@ namespace ValidaContatoApi.Business.Services
             try
             {
                 if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
-                    resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual a atual!");
-                else
                 {
-                    if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
-                        resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
-                    else
-                    {
-                        var contato = _mapper.Map<Contato>(contatoViewModel);
-
-                        var contatoAdicionado = await _contatoRepository.Adicionar(contato);
-                        contatoAdicionado.Idade = _validacao.CalcularIdade(contato.DataNascimento);
-
-                        resultado.ResultadoOk("Contato adicionado com sucesso!");
-                        resultado.Result = _mapper.Map<ContatoDTO>(contatoAdicionado);
-                    }
+                    resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual a atual!");
+                    return resultado;
                 }
+
+                if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
+                {
+                    resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
+                    return resultado;
+                }
+
+                var contato = _mapper.Map<Contato>(contatoViewModel);
+                var contatoAdicionado = await _contatoRepository.Adicionar(contato);
+
+                contatoAdicionado.Idade = _validacao.CalcularIdade(contato.DataNascimento);
+
+                resultado.ResultadoOk("Contato adicionado com sucesso!");
+                resultado.Result = _mapper.Map<ContatoDTO>(contatoAdicionado);
             }
             catch (Exception ex)
             {
@@ -59,27 +61,30 @@ namespace ValidaContatoApi.Business.Services
             try
             {
                 var contatoExiste = await _contatoRepository.ObterPorId(contatoViewModel.Id);
+
                 if (contatoExiste is null)
-                    resultado.ResultadoErro(404, "Contato não existe!");
-                else
                 {
-                    if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
-                        resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual que a atual!");
-                    else
-                    {
-                        if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
-                            resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
-                        else
-                        {
-                            _mapper.Map<AtualizarContatoVM, Contato>(contatoViewModel, contatoExiste);
-
-                            await _contatoRepository.SaveChanges();
-
-                            resultado.ResultadoOk("Contato alterado com sucesso!");
-                            resultado.Result = _mapper.Map<ContatoDTO>(contatoExiste);
-                        }
-                    }
+                    resultado.ResultadoErro(404, "Contato não existe!");
+                    return resultado;
                 }
+
+                if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
+                {
+                    resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual que a atual!");
+                    return resultado;
+                }
+
+                if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
+                {
+                    resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
+                    return resultado;
+                }
+
+                _mapper.Map<AtualizarContatoVM, Contato>(contatoViewModel, contatoExiste);
+                await _contatoRepository.SaveChanges();
+
+                resultado.ResultadoOk("Contato alterado com sucesso!");
+                resultado.Result = _mapper.Map<ContatoDTO>(contatoExiste);
             }
             catch (Exception ex)
             {
@@ -92,17 +97,17 @@ namespace ValidaContatoApi.Business.Services
         public async Task<Resultado<ContatoDTO>> ObterPorId(Guid id)
         {
             var resultado = new Resultado<ContatoDTO>();
-
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato is null || !contato.Status)
-                resultado.ResultadoErro(204, "Contato não encontrado!");
-            else
             {
-                contato.Idade = _validacao.CalcularIdade(contato.DataNascimento);
-                resultado.Result = _mapper.Map<ContatoDTO>(contato);
-                resultado.ResultadoOk("Contato obtido com sucesso!");
+                resultado.ResultadoErro(204, "Contato não encontrado!");
+                return resultado;
             }
+
+            contato.Idade = _validacao.CalcularIdade(contato.DataNascimento);
+            resultado.Result = _mapper.Map<ContatoDTO>(contato);
+            resultado.ResultadoOk("Contato obtido com sucesso!");
 
             return resultado;
         }
@@ -113,14 +118,17 @@ namespace ValidaContatoApi.Business.Services
 
             var contatos = await _contatoRepository.Buscar(c => c.Status);
 
-            if (contatos is null || !contatos.Any())
+            if (!contatos?.Any() ?? true)
+            {
                 resultado.ResultadoErro(204, "Nenhum registro encontrado!");
+            }
             else
             {
                 foreach (var contato in contatos)
                 {
                     contato.Idade = _validacao.CalcularIdade(contato.DataNascimento);
                 }
+
                 resultado.ResultadoOk("Sucesso");
                 resultado.Result = _mapper.Map<IEnumerable<ContatoDTO>>(contatos);
             }
@@ -133,46 +141,35 @@ namespace ValidaContatoApi.Business.Services
             var resultado = new Resultado<ContatoDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
-            if (contato is null)
-            {
-                resultado.ResultadoErro(404, "Contato não encontrado!");
-            }
-            else
+            if (contato != null)
             {
                 await _contatoRepository.Remover(id);
                 resultado.ResultadoOk("Contato removido com sucesso!");
             }
+            else
+            {
+                resultado.ResultadoErro(404, "Contato não encontrado!");
+            }
 
             return resultado;
         }
-
 
         public async Task<Resultado<ContatoDTO>> Ativar(Guid id)
         {
             var resultado = new Resultado<ContatoDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
-            if (contato != null)
-            {
-                if (contato.Status)
-                {
-                    contato.Status = false;
-                    resultado.ResultadoOk("Contato desativado com sucesso!");
-                    await _contatoRepository.Atualizar(contato);
-                }
-                else
-                {
-                    contato.Status = true;
-                    resultado.ResultadoOk("Contato ativado com sucesso!");
-                    await _contatoRepository.Atualizar(contato);
-                }
-
-                resultado.Result = _mapper.Map<ContatoDTO>(contato);
-            }
-            else
+            if (contato == null)
             {
                 resultado.ResultadoErro(404, "Contato não encontrado!");
+                return resultado;
             }
+
+            contato.Status = !contato.Status;
+            await _contatoRepository.Atualizar(contato);
+
+            resultado.ResultadoOk(contato.Status ? "Contato ativado com sucesso!" : "Contato desativado com sucesso!");
+            resultado.Result = _mapper.Map<ContatoDTO>(contato);
 
             return resultado;
         }
