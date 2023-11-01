@@ -1,3 +1,8 @@
+Neste repositório, busco aplicar todos os cenários discutidos ao longo do livro "TDD no Mundo Real com .NET" de Mauricio Aniche.
+
+
+
+
 ValidaContatoApi é uma solução desenvolvida em .NET Core, projetada para proporcionar uma experiência otimizada e segura no gerenciamento e validação de contatos.
 
 
