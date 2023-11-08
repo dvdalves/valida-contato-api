@@ -9,7 +9,7 @@ namespace ValidaContatoApi.Controllers
     {
         protected IActionResult ObterIActionResult<T>(Resultado<T> resultado)
         {
-            if (resultado == null)
+            if (resultado is null)
                 return StatusCode(500, null);
 
             return StatusCode(resultado.StatusCode, resultado);

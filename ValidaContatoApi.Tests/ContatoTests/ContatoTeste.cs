@@ -17,6 +17,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             _contatoService = _serviceProvider.GetRequiredService<IContatoService>();
         }
 
+        #region Testes
         [Test]
         public async Task ObterTodos_Sucesso()
         {
@@ -401,4 +402,5 @@ namespace ValidaContatoApi.Tests.ContatoTests
             Assert.That(result.IsSuccess, Is.True);
         }
     }
+        #endregion
 }
