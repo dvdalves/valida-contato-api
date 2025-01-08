@@ -3,14 +3,14 @@ using ValidaContatoApi.Domain.Enum;
 
 namespace ValidaContatoApi.Domain.Models
 {
-    public class Contato : Entity
+    public class Contact : Entity
     {
-        public string? Nome { get; set; }
+        public string? Name { get; set; }
         public bool Status { get; set; } = true;
-        public SexoEnum Sexo { get; set; }
-        public DateTime DataNascimento { get; set; }
+        public GenderEnum Gender { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [NotMapped]
-        public int Idade { get; set; }
+        public int Age { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ValidaContatoApi.Business.ViewModels
 {
-    public class CriarContatoVM
+    public class CreateContactVM
     {
         public string? Nome { get; set; }
         public int Sexo { get; set; }

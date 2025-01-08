@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using ValidaContatoApi.Business.Common;
 using ValidaContatoApi.Business.DTO;
 using ValidaContatoApi.Business.Interface;
-using ValidaContatoApi.Business.Resultados;
 using ValidaContatoApi.Business.Validations;
 using ValidaContatoApi.Business.ViewModels;
 using ValidaContatoApi.Data.Interface;
@@ -9,22 +9,22 @@ using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Business.Services
 {
-    public class ContatoService : IContatoService
+    public class ContatoService : IContactService
     {
-        private readonly IContatoRepository _contatoRepository;
+        private readonly IContactRepository _contatoRepository;
         private readonly IMapper _mapper;
-        private readonly ContatoValidation _validacao;
+        private readonly ContactValidation _validacao;
 
-        public ContatoService(IContatoRepository contatoRepository, IMapper mapper)
+        public ContatoService(IContactRepository contatoRepository, IMapper mapper)
         {
             _contatoRepository = contatoRepository;
             _mapper = mapper;
-            _validacao = new ContatoValidation();
+            _validacao = new ContactValidation();
         }
 
-        public async Task<Resultado<ContatoDTO>> Adicionar(CriarContatoVM contatoViewModel)
+        public async Task<Result<ContactDTO>> Adicionar(CreateContactVM contatoViewModel)
         {
-            var resultado = new Resultado<ContatoDTO>();
+            var resultado = new Result<ContactDTO>();
             try
             {
                 if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
@@ -39,13 +39,13 @@ namespace ValidaContatoApi.Business.Services
                     return resultado;
                 }
 
-                var contato = _mapper.Map<Contato>(contatoViewModel);
+                var contato = _mapper.Map<Contact>(contatoViewModel);
                 var contatoAdicionado = await _contatoRepository.Adicionar(contato);
 
-                contatoAdicionado.Idade = _validacao.CalcularIdade(contato.DataNascimento);
+                contatoAdicionado.Age = _validacao.CalcularIdade(contato.BirthDate);
 
                 resultado.ResultadoOk("Contato adicionado com sucesso!");
-                resultado.Result = _mapper.Map<ContatoDTO>(contatoAdicionado);
+                resultado.Results = _mapper.Map<ContactDTO>(contatoAdicionado);
             }
             catch (Exception ex)
             {
@@ -55,9 +55,9 @@ namespace ValidaContatoApi.Business.Services
             return resultado;
         }
 
-        public async Task<Resultado<ContatoDTO>> Atualizar(AtualizarContatoVM contatoViewModel)
+        public async Task<Result<ContactDTO>> Atualizar(UpdateContactVM contatoViewModel)
         {
-            var resultado = new Resultado<ContatoDTO>();
+            var resultado = new Result<ContactDTO>();
             try
             {
                 var contatoExiste = await _contatoRepository.ObterPorId(contatoViewModel.Id);
@@ -80,11 +80,11 @@ namespace ValidaContatoApi.Business.Services
                     return resultado;
                 }
 
-                _mapper.Map<AtualizarContatoVM, Contato>(contatoViewModel, contatoExiste);
+                _mapper.Map<UpdateContactVM, Contact>(contatoViewModel, contatoExiste);
                 await _contatoRepository.SaveChanges();
 
                 resultado.ResultadoOk("Contato alterado com sucesso!");
-                resultado.Result = _mapper.Map<ContatoDTO>(contatoExiste);
+                resultado.Results = _mapper.Map<ContactDTO>(contatoExiste);
             }
             catch (Exception ex)
             {
@@ -94,9 +94,9 @@ namespace ValidaContatoApi.Business.Services
             return resultado;
         }
 
-        public async Task<Resultado<ContatoDTO>> ObterPorId(Guid id)
+        public async Task<Result<ContactDTO>> ObterPorId(Guid id)
         {
-            var resultado = new Resultado<ContatoDTO>();
+            var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato is null || !contato.Status)
@@ -105,16 +105,16 @@ namespace ValidaContatoApi.Business.Services
                 return resultado;
             }
 
-            contato.Idade = _validacao.CalcularIdade(contato.DataNascimento);
-            resultado.Result = _mapper.Map<ContatoDTO>(contato);
+            contato.Age = _validacao.CalcularIdade(contato.BirthDate);
+            resultado.Results = _mapper.Map<ContactDTO>(contato);
             resultado.ResultadoOk("Contato obtido com sucesso!");
 
             return resultado;
         }
 
-        public async Task<Resultado<IEnumerable<ContatoDTO>>> ObterTodos()
+        public async Task<Result<IEnumerable<ContactDTO>>> ObterTodos()
         {
-            var resultado = new Resultado<IEnumerable<ContatoDTO>>();
+            var resultado = new Result<IEnumerable<ContactDTO>>();
 
             var contatos = await _contatoRepository.Buscar(c => c.Status);
 
@@ -126,19 +126,19 @@ namespace ValidaContatoApi.Business.Services
             {
                 foreach (var contato in contatos)
                 {
-                    contato.Idade = _validacao.CalcularIdade(contato.DataNascimento);
+                    contato.Age = _validacao.CalcularIdade(contato.BirthDate);
                 }
 
                 resultado.ResultadoOk("Sucesso");
-                resultado.Result = _mapper.Map<IEnumerable<ContatoDTO>>(contatos);
+                resultado.Results = _mapper.Map<IEnumerable<ContactDTO>>(contatos);
             }
 
             return resultado;
         }
 
-        public async Task<Resultado<ContatoDTO>> Remover(Guid id)
+        public async Task<Result<ContactDTO>> Remover(Guid id)
         {
-            var resultado = new Resultado<ContatoDTO>();
+            var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato != null)
@@ -154,9 +154,9 @@ namespace ValidaContatoApi.Business.Services
             return resultado;
         }
 
-        public async Task<Resultado<ContatoDTO>> Ativar(Guid id)
+        public async Task<Result<ContactDTO>> Ativar(Guid id)
         {
-            var resultado = new Resultado<ContatoDTO>();
+            var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato == null)
@@ -169,7 +169,7 @@ namespace ValidaContatoApi.Business.Services
             await _contatoRepository.Atualizar(contato);
 
             resultado.ResultadoOk(contato.Status ? "Contato ativado com sucesso!" : "Contato desativado com sucesso!");
-            resultado.Result = _mapper.Map<ContatoDTO>(contato);
+            resultado.Results = _mapper.Map<ContactDTO>(contato);
 
             return resultado;
         }

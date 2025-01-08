@@ -4,23 +4,23 @@ using ValidaContatoApi.Business.ViewModels;
 
 namespace ValidaContatoApi.Controllers
 {
-    public class ContatosController : BaseController
+    public class ContactsController : BaseController
     {
-        private readonly IContatoService _contatoService;
+        private readonly IContactService _contatoService;
 
-        public ContatosController(IContatoService contatoService)
+        public ContactsController(IContactService contatoService)
         {
             _contatoService = contatoService;
         }
 
         [HttpPost("AdicionarContato")]
-        public async Task<IActionResult> AdicionarContato([FromBody] CriarContatoVM contatoViewModel)
+        public async Task<IActionResult> AdicionarContato([FromBody] CreateContactVM contatoViewModel)
         {
             return ObterIActionResult(await _contatoService.Adicionar(contatoViewModel));
         }
 
         [HttpPut("AtualizarContato")]
-        public async Task<IActionResult> AtualizarContato([FromBody] AtualizarContatoVM contatoViewModel)
+        public async Task<IActionResult> AtualizarContato([FromBody] UpdateContactVM contatoViewModel)
         {
             return ObterIActionResult(await _contatoService.Atualizar(contatoViewModel));
         }

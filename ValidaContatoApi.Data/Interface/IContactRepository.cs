@@ -2,5 +2,5 @@
 
 namespace ValidaContatoApi.Data.Interface
 {
-    public interface IContatoRepository : IRepository<Contato> { }
+    public interface IContactRepository : IRepository<Contact> { }
 }

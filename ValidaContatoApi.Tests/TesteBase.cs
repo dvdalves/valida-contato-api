@@ -42,8 +42,8 @@ namespace ValidaContatoApi.Tests
         {
             var serviceColection = new ServiceCollection();
             serviceColection.AddDbContext<ValidaContatoContext>(options => options.UseInMemoryDatabase(databaseName: DataBaseName));
-            serviceColection.AddScoped<IContatoRepository, ContatoRepository>();
-            serviceColection.AddScoped<IContatoService, ContatoService>();
+            serviceColection.AddScoped<IContactRepository, ContactRepository>();
+            serviceColection.AddScoped<IContactService, ContatoService>();
             serviceColection.AddAutoMapper(typeof(Configurations.AutoMapper));
             _serviceProvider = serviceColection.BuildServiceProvider();
         }

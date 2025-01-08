@@ -9,9 +9,9 @@ namespace ValidaContatoApi.Configurations
     {
         public AutoMapper()
         {
-            CreateMap<Contato, CriarContatoVM>().ReverseMap();
-            CreateMap<Contato, ContatoDTO>().ReverseMap();
-            CreateMap<Contato, AtualizarContatoVM>().ReverseMap();
+            CreateMap<Contact, CreateContactVM>().ReverseMap();
+            CreateMap<Contact, ContactDTO>().ReverseMap();
+            CreateMap<Contact, UpdateContactVM>().ReverseMap();
         }
     }
 }

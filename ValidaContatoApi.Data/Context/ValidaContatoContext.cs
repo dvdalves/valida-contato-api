@@ -7,7 +7,7 @@ namespace ValidaContatoApi.Data.Context
     {
         public ValidaContatoContext(DbContextOptions<ValidaContatoContext> options) : base(options) { }
 
-        public DbSet<Contato> Contatos { get; set; }
+        public DbSet<Contact> Contatos { get; set; }
 
     }
 }

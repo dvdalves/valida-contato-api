@@ -12,8 +12,8 @@ namespace ValidaContatoApi.Configurations
     {
         public static void ConfigureDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IContatoRepository, ContatoRepository>();
-            services.AddScoped<IContatoService, ContatoService>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<IContactService, ContatoService>();
             services.AddAutoMapper(typeof(Program));
         }
 

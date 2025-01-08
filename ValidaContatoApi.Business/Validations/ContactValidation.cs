@@ -1,6 +1,6 @@
 ﻿namespace ValidaContatoApi.Business.Validations
 {
-    internal class ContatoValidation
+    internal class ContactValidation
     {
         public DateTime DataAtual = DateTime.Now;
 

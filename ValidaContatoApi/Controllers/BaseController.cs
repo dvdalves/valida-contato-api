@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ValidaContatoApi.Business.Resultados;
+using ValidaContatoApi.Business.Common;
 
 namespace ValidaContatoApi.Controllers
 {
@@ -7,7 +7,7 @@ namespace ValidaContatoApi.Controllers
     [Route("Controller/Api/")]
     public abstract class BaseController : ControllerBase
     {
-        protected IActionResult ObterIActionResult<T>(Resultado<T> resultado)
+        protected IActionResult ObterIActionResult<T>(Result<T> resultado)
         {
             if (resultado is null)
                 return StatusCode(500, null);

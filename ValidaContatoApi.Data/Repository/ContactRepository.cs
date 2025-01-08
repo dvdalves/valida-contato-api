@@ -4,8 +4,8 @@ using ValidaContatoApi.Domain.Models;
 
 namespace ValidaContatoApi.Data.Repository
 {
-    public class ContatoRepository : Repository<Contato>, IContatoRepository
+    public class ContactRepository : Repository<Contact>, IContactRepository
     {
-        public ContatoRepository(ValidaContatoContext context) : base(context) { }
+        public ContactRepository(ValidaContatoContext context) : base(context) { }
     }
 }

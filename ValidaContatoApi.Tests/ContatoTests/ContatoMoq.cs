@@ -5,20 +5,20 @@ namespace ValidaContatoApi.Tests.ContatoTests
 {
     public static class ContatoMoq
     {
-        private static Contato ObterContatoParaOMoq(string nome)
+        private static Contact ObterContatoParaOMoq(string nome)
         {
-            return new Contato
+            return new Contact
             {
-                DataNascimento = DateTime.Parse("05-10-1995"),
-                Sexo = SexoEnum.Masculino,
-                Nome = nome,
+                BirthDate = DateTime.Parse("05-10-1995"),
+                Gender = GenderEnum.Masculino,
+                Name = nome,
                 Status = true,
             };
         }
 
-        private static List<Contato> ObterListaContatos(int quantidade)
+        private static List<Contact> ObterListaContatos(int quantidade)
         {
-            var lista = new List<Contato>();
+            var lista = new List<Contact>();
 
             for (int i = 0; i < quantidade; i++)
                 lista.Add(ObterContatoParaOMoq($"{nameof(ObterMoq_Para_ObterTodosContatos)}{i}"));
@@ -26,19 +26,19 @@ namespace ValidaContatoApi.Tests.ContatoTests
             return lista;
         }
 
-        public static List<Contato> ObterMoq_Para_ObterTodosContatos()
+        public static List<Contact> ObterMoq_Para_ObterTodosContatos()
         {
             return ObterListaContatos(10);
         }
 
-        public static List<Contato> ObterMoq_Para_AtualizarContato()
+        public static List<Contact> ObterMoq_Para_AtualizarContato()
         {
             return ObterListaContatos(10);
         }
 
-        public static List<Contato> ObterMoq_Para_ObterContatoPorId()
+        public static List<Contact> ObterMoq_Para_ObterContatoPorId()
         {
-            var lista = new List<Contato>();
+            var lista = new List<Contact>();
             lista.Add(ObterContatoParaOMoq(nameof(ObterMoq_Para_ObterContatoPorId)));
             return lista;
         }
