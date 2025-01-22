@@ -6,47 +6,47 @@ namespace ValidaContatoApi.Controllers
 {
     public class ContactsController : BaseController
     {
-        private readonly IContactService _contatoService;
+        private readonly IContactService _contactService;
 
         public ContactsController(IContactService contatoService)
         {
-            _contatoService = contatoService;
+            _contactService = contatoService;
         }
 
-        [HttpPost("AdicionarContato")]
-        public async Task<IActionResult> AdicionarContato([FromBody] CreateContactVM contatoViewModel)
+        [HttpPost()]
+        public async Task<IActionResult> Post([FromBody] CreateContactVM contatoViewModel)
         {
-            return ObterIActionResult(await _contatoService.Adicionar(contatoViewModel));
+            return GetActionResult(await _contactService.Create(contatoViewModel));
         }
 
-        [HttpPut("AtualizarContato")]
-        public async Task<IActionResult> AtualizarContato([FromBody] UpdateContactVM contatoViewModel)
+        [HttpPut()]
+        public async Task<IActionResult> Put([FromBody] UpdateContactVM contatoViewModel)
         {
-            return ObterIActionResult(await _contatoService.Atualizar(contatoViewModel));
+            return GetActionResult(await _contactService.Update(contatoViewModel));
         }
 
-        [HttpGet("ObterTodosContatos")]
-        public async Task<IActionResult> ObterTodosContatos()
+        [HttpGet()]
+        public async Task<IActionResult> Get()
         {
-            return ObterIActionResult(await _contatoService.ObterTodos());
+            return GetActionResult(await _contactService.GetAll());
         }
 
-        [HttpGet("ObterContatoPorId/{id:guid}")]
-        public async Task<IActionResult> ObterContatoPorId([FromRoute] Guid id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            return ObterIActionResult(await _contatoService.ObterPorId(id));
+            return GetActionResult(await _contactService.GetById(id));
         }
 
-        [HttpPatch("AtivarDesativarContato/{id:guid}")]
-        public async Task<IActionResult> AtivarContato([FromRoute] Guid id)
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> Patch([FromRoute] Guid id)
         {
-            return ObterIActionResult(await _contatoService.Ativar(id));
+            return GetActionResult(await _contactService.Toggle(id));
         }
 
-        [HttpDelete("ExcluirContato/{id:guid}")]
-        public async Task<IActionResult> RemoverContato([FromRoute] Guid id)
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            return ObterIActionResult(await _contatoService.Remover(id));
+            return GetActionResult(await _contactService.Delete(id));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             PopularBancoDeDados(ContatoMoq.ObterMoq_Para_ObterTodosContatos());
 
             //act
-            var resultAct = await _contatoService.ObterTodos();
+            var resultAct = await _contatoService.GetAll();
 
             //assert	
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -50,7 +50,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             await _context.Database.EnsureCreatedAsync();
 
             // act
-            var resultAct = await _contatoService.ObterTodos();
+            var resultAct = await _contatoService.GetAll();
 
             // assert    
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -71,7 +71,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             await _context.Database.EnsureCreatedAsync();
 
             //act
-            var resultAct = await _contatoService.ObterPorId(Guid.NewGuid());
+            var resultAct = await _contatoService.GetById(Guid.NewGuid());
 
             //assert
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -92,7 +92,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
 
             //act
             var constato = await _context.Contatos.FirstOrDefaultAsync();
-            var resultAct = await _contatoService.ObterPorId(constato.Id);
+            var resultAct = await _contatoService.GetById(constato.Id);
 
             //assert
             Assert.That(resultAct.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -117,7 +117,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             };
 
             //act 
-            var resultadoAcao = await _contatoService.Adicionar(createContato);
+            var resultadoAcao = await _contatoService.Create(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Name == createContato.Nome);
 
             //assert
@@ -145,7 +145,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             };
 
             //act
-            var resultadoAcao = await _contatoService.Adicionar(createContato);
+            var resultadoAcao = await _contatoService.Create(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Name == createContato.Nome);
 
             //assert	
@@ -174,7 +174,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             };
 
             //act
-            var resultadoAcao = await _contatoService.Adicionar(createContato);
+            var resultadoAcao = await _contatoService.Create(createContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Name == createContato.Nome);
 
             //assert	
@@ -199,7 +199,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             PopularBancoDeDados(new List<Contact> { contato });
 
             // act
-            var result = await _contatoService.Ativar(contatoId);
+            var result = await _contatoService.Toggle(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -224,7 +224,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             PopularBancoDeDados(new List<Contact> { contato });
 
             // act
-            var result = await _contatoService.Ativar(contatoId);
+            var result = await _contatoService.Toggle(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -245,7 +245,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             var contatoId = Guid.NewGuid();
 
             // act
-            var result = await _contatoService.Ativar(contatoId);
+            var result = await _contatoService.Toggle(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -268,7 +268,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             contato.Nome = "David 5";
 
             // Act
-            var result = await _contatoService.Atualizar(contato);
+            var result = await _contatoService.Update(contato);
             var verificacao = await _context.Contatos.FirstAsync(p => p.Id == contato.Id);
 
             // Assert
@@ -296,7 +296,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             };
 
             //act 
-            var resultadoAcao = await _contatoService.Atualizar(updateContato);
+            var resultadoAcao = await _contatoService.Update(updateContato);
             var contatoExiste = await _context.Contatos.AnyAsync(p => p.Id == updateContato.Id);
 
             //assert
@@ -321,7 +321,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             contato.Nome = "David 5";
 
             //act
-            var resultadoAcao = await _contatoService.Atualizar(contato);
+            var resultadoAcao = await _contatoService.Update(contato);
             var contatoAtualizado = await _context.Contatos.FirstOrDefaultAsync(p => p.Id == contato.Id);
 
             //assert	
@@ -347,7 +347,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             contato.Nome = "David 5";
 
             // Act
-            var resultadoAcao = await _contatoService.Atualizar(contato);
+            var resultadoAcao = await _contatoService.Update(contato);
             var contatoAtualizado = await _context.Contatos.FirstOrDefaultAsync(p => p.Id == contato.Id);
 
             // Assert
@@ -370,7 +370,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             var contatoId = Guid.NewGuid();
 
             // act
-            var result = await _contatoService.Remover(contatoId);
+            var result = await _contatoService.Delete(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));
@@ -393,7 +393,7 @@ namespace ValidaContatoApi.Tests.ContatoTests
             PopularBancoDeDados(new List<Contact> { contato });
 
             // act
-            var result = await _contatoService.Remover(contatoId);
+            var result = await _contatoService.Delete(contatoId);
 
             // assert
             Assert.That(result.StatusCode, Is.EqualTo(resultadoEsperado));

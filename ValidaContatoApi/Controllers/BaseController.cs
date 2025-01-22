@@ -4,15 +4,15 @@ using ValidaContatoApi.Business.Common;
 namespace ValidaContatoApi.Controllers
 {
     [ApiController()]
-    [Route("Controller/Api/")]
+    [Route("api/")]
     public abstract class BaseController : ControllerBase
     {
-        protected IActionResult ObterIActionResult<T>(Result<T> resultado)
+        protected IActionResult GetActionResult<T>(Result<T> result)
         {
-            if (resultado is null)
+            if (result is null)
                 return StatusCode(500, null);
 
-            return StatusCode(resultado.StatusCode, resultado);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

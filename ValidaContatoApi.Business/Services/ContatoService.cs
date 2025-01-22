@@ -22,20 +22,20 @@ namespace ValidaContatoApi.Business.Services
             _validacao = new ContactValidation();
         }
 
-        public async Task<Result<ContactDTO>> Adicionar(CreateContactVM contatoViewModel)
+        public async Task<Result<ContactDTO>> Create(CreateContactVM contatoViewModel)
         {
             var resultado = new Result<ContactDTO>();
             try
             {
                 if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
                 {
-                    resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual a atual!");
+                    resultado.ErrorResult(400, "Não pode ser selecionada data maior ou igual a atual!");
                     return resultado;
                 }
 
                 if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
                 {
-                    resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
+                    resultado.ErrorResult(400, "Contato não pode ser menor de idade!");
                     return resultado;
                 }
 
@@ -49,13 +49,13 @@ namespace ValidaContatoApi.Business.Services
             }
             catch (Exception ex)
             {
-                resultado.ResultadoErro(500, ex.Message);
+                resultado.ErrorResult(500, ex.Message);
             }
 
             return resultado;
         }
 
-        public async Task<Result<ContactDTO>> Atualizar(UpdateContactVM contatoViewModel)
+        public async Task<Result<ContactDTO>> Update(UpdateContactVM contatoViewModel)
         {
             var resultado = new Result<ContactDTO>();
             try
@@ -64,19 +64,19 @@ namespace ValidaContatoApi.Business.Services
 
                 if (contatoExiste is null)
                 {
-                    resultado.ResultadoErro(404, "Contato não existe!");
+                    resultado.ErrorResult(404, "Contato não existe!");
                     return resultado;
                 }
 
                 if (!_validacao.ValidarData(contatoViewModel.DataNascimento))
                 {
-                    resultado.ResultadoErro(400, "Não pode ser selecionada data maior ou igual que a atual!");
+                    resultado.ErrorResult(400, "Não pode ser selecionada data maior ou igual que a atual!");
                     return resultado;
                 }
 
                 if (!_validacao.ValidaSeMaiorDeIdade(contatoViewModel.DataNascimento))
                 {
-                    resultado.ResultadoErro(400, "Contato não pode ser menor de idade!");
+                    resultado.ErrorResult(400, "Contato não pode ser menor de idade!");
                     return resultado;
                 }
 
@@ -88,20 +88,20 @@ namespace ValidaContatoApi.Business.Services
             }
             catch (Exception ex)
             {
-                resultado.ResultadoErro(500, ex.Message);
+                resultado.ErrorResult(500, ex.Message);
             }
 
             return resultado;
         }
 
-        public async Task<Result<ContactDTO>> ObterPorId(Guid id)
+        public async Task<Result<ContactDTO>> GetById(Guid id)
         {
             var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato is null || !contato.Status)
             {
-                resultado.ResultadoErro(204, "Contato não encontrado!");
+                resultado.ErrorResult(204, "Contato não encontrado!");
                 return resultado;
             }
 
@@ -112,7 +112,7 @@ namespace ValidaContatoApi.Business.Services
             return resultado;
         }
 
-        public async Task<Result<IEnumerable<ContactDTO>>> ObterTodos()
+        public async Task<Result<IEnumerable<ContactDTO>>> GetAll()
         {
             var resultado = new Result<IEnumerable<ContactDTO>>();
 
@@ -120,7 +120,7 @@ namespace ValidaContatoApi.Business.Services
 
             if (!contatos?.Any() ?? true)
             {
-                resultado.ResultadoErro(204, "Nenhum registro encontrado!");
+                resultado.ErrorResult(204, "Nenhum registro encontrado!");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace ValidaContatoApi.Business.Services
             return resultado;
         }
 
-        public async Task<Result<ContactDTO>> Remover(Guid id)
+        public async Task<Result<ContactDTO>> Delete(Guid id)
         {
             var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
@@ -148,20 +148,20 @@ namespace ValidaContatoApi.Business.Services
             }
             else
             {
-                resultado.ResultadoErro(404, "Contato não encontrado!");
+                resultado.ErrorResult(404, "Contato não encontrado!");
             }
 
             return resultado;
         }
 
-        public async Task<Result<ContactDTO>> Ativar(Guid id)
+        public async Task<Result<ContactDTO>> Toggle(Guid id)
         {
             var resultado = new Result<ContactDTO>();
             var contato = await _contatoRepository.ObterPorId(id);
 
             if (contato == null)
             {
-                resultado.ResultadoErro(404, "Contato não encontrado!");
+                resultado.ErrorResult(404, "Contato não encontrado!");
                 return resultado;
             }
 

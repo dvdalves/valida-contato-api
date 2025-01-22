@@ -14,7 +14,7 @@
             Message = mensagem;
         }
 
-        public void ResultadoErro(int resultCode, string mensagem)
+        public void ErrorResult(int resultCode, string mensagem)
         {
             IsSuccess = false;
             StatusCode = resultCode;
