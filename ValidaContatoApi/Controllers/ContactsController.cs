@@ -2,51 +2,50 @@
 using ValidaContatoApi.Business.Interface;
 using ValidaContatoApi.Business.ViewModels;
 
-namespace ValidaContatoApi.Controllers
+namespace ValidaContatoApi.Controllers;
+
+public class ContactsController : BaseController
 {
-    public class ContactsController : BaseController
+    private readonly IContactService _contactService;
+
+    public ContactsController(IContactService contatoService)
     {
-        private readonly IContactService _contactService;
+        _contactService = contatoService;
+    }
 
-        public ContactsController(IContactService contatoService)
-        {
-            _contactService = contatoService;
-        }
+    [HttpPost()]
+    public async Task<IActionResult> Post([FromBody] CreateContactVM contactViewModel)
+    {
+        return GetActionResult(await _contactService.Create(contactViewModel));
+    }
 
-        [HttpPost()]
-        public async Task<IActionResult> Post([FromBody] CreateContactVM contatoViewModel)
-        {
-            return GetActionResult(await _contactService.Create(contatoViewModel));
-        }
+    [HttpPut()]
+    public async Task<IActionResult> Put([FromBody] UpdateContactVM contactViewModel)
+    {
+        return GetActionResult(await _contactService.Update(contactViewModel));
+    }
 
-        [HttpPut()]
-        public async Task<IActionResult> Put([FromBody] UpdateContactVM contatoViewModel)
-        {
-            return GetActionResult(await _contactService.Update(contatoViewModel));
-        }
+    [HttpGet()]
+    public async Task<IActionResult> Get()
+    {
+        return GetActionResult(await _contactService.GetAll());
+    }
 
-        [HttpGet()]
-        public async Task<IActionResult> Get()
-        {
-            return GetActionResult(await _contactService.GetAll());
-        }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get([FromRoute] Guid id)
+    {
+        return GetActionResult(await _contactService.GetById(id));
+    }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
-        {
-            return GetActionResult(await _contactService.GetById(id));
-        }
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> Patch([FromRoute] Guid id)
+    {
+        return GetActionResult(await _contactService.Toggle(id));
+    }
 
-        [HttpPatch("{id:guid}")]
-        public async Task<IActionResult> Patch([FromRoute] Guid id)
-        {
-            return GetActionResult(await _contactService.Toggle(id));
-        }
-
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
-        {
-            return GetActionResult(await _contactService.Delete(id));
-        }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        return GetActionResult(await _contactService.Delete(id));
     }
 }

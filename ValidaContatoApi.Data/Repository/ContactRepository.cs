@@ -2,10 +2,9 @@
 using ValidaContatoApi.Data.Interface;
 using ValidaContatoApi.Domain.Models;
 
-namespace ValidaContatoApi.Data.Repository
+namespace ValidaContatoApi.Data.Repository;
+
+public class ContactRepository : Repository<Contact>, IContactRepository
 {
-    public class ContactRepository : Repository<Contact>, IContactRepository
-    {
-        public ContactRepository(ValidaContatoContext context) : base(context) { }
-    }
+    public ContactRepository(ValidateContactContext context) : base(context) { }
 }

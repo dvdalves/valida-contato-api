@@ -1,26 +1,25 @@
-﻿namespace ValidaContatoApi.Business.Validations
+﻿namespace ValidaContatoApi.Business.Validations;
+
+internal class ContactValidation
 {
-    internal class ContactValidation
+    public DateTime CurrentDate = DateTime.Now;
+
+    internal bool ValidateDate(DateTime birthDate)
     {
-        public DateTime DataAtual = DateTime.Now;
+        return birthDate.Date <= CurrentDate.Date;
+    }
 
-        internal bool ValidarData(DateTime dataNascimento)
-        {
-            return dataNascimento.Date <= DataAtual.Date;
-        }
+    internal bool ValidateIfOfLegalAge(DateTime birthDate)
+    {
+        var age = CalculateAge(birthDate);
 
-        internal bool ValidaSeMaiorDeIdade(DateTime dataNascimento)
-        {
-            var idade = CalcularIdade(dataNascimento);
+        return age >= 18;
+    }
 
-            return idade >= 18;
-        }
+    internal int CalculateAge(DateTime birthDate)
+    {
+        var difference = CurrentDate - birthDate;
 
-        internal int CalcularIdade(DateTime dataNascimento)
-        {
-            var diferenca = DataAtual - dataNascimento;
-
-            return (int)diferenca.TotalDays / 365;
-        }
+        return (int)difference.TotalDays / 365;
     }
 }

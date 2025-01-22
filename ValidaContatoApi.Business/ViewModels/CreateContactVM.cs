@@ -1,9 +1,8 @@
-﻿namespace ValidaContatoApi.Business.ViewModels
+﻿namespace ValidaContatoApi.Business.ViewModels;
+
+public class CreateContactVM
 {
-    public class CreateContactVM
-    {
-        public string? Nome { get; set; }
-        public int Sexo { get; set; }
-        public DateTime DataNascimento { get; set; }
-    }
+    public string? Name { get; set; }
+    public int Gender { get; set; }
+    public DateTime BirthDate { get; set; }
 }

@@ -1,12 +1,11 @@
 ﻿using ValidaContatoApi.Domain.Enum;
 
-namespace ValidaContatoApi.Business.ViewModels
+namespace ValidaContatoApi.Business.ViewModels;
+
+public class UpdateContactVM
 {
-    public class UpdateContactVM
-    {
-        public Guid Id { get; set; }
-        public string? Nome { get; set; }
-        public GenderEnum Sexo { get; set; }
-        public DateTime DataNascimento { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string? Name { get; set; }
+    public GenderEnum Gender { get; set; }
+    public DateTime BirthDate { get; set; }
 }

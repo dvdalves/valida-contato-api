@@ -1,12 +1,11 @@
-﻿namespace ValidaContatoApi.Domain.Models
-{
-    public abstract class Entity
-    {
-        public Guid Id { get; set; }
+﻿namespace ValidaContatoApi.Domain.Models;
 
-        protected Entity()
-        {
-            Id = Guid.NewGuid();
-        }
-    }    
+public abstract class Entity
+{
+    public Guid Id { get; set; }
+
+    protected Entity()
+    {
+        Id = Guid.NewGuid();
+    }
 }

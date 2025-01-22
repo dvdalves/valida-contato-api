@@ -1,9 +1,8 @@
-﻿namespace ValidaContatoApi.Domain.Enum
+﻿namespace ValidaContatoApi.Domain.Enum;
+
+public enum GenderEnum
 {
-    public enum GenderEnum
-    {
-        Male = 0,
-        Female = 1,
-        Other = 3
-    }
+    Male = 0,
+    Female = 1,
+    Other = 3
 }

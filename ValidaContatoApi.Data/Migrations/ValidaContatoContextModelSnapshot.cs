@@ -10,7 +10,7 @@ using ValidaContatoApi.Data.Context;
 
 namespace ValidaContatoApi.Data.Migrations
 {
-    [DbContext(typeof(ValidaContatoContext))]
+    [DbContext(typeof(ValidateContactContext))]
     partial class ValidaContatoContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace ValidaContatoApi.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DataNascimento")
+                    b.Property<DateTime>("birthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
